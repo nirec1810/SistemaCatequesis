@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="header">
+    <h2>Listado de Catequizandos</h2>
+    <p class="subtitulo">Información de todos los inscritos</p>
+</div>
+
+<section>
+    <div class="info">
+        <div style="text-align:center; margin-bottom:20px;">
+            <input id="searchInput" placeholder="Buscar por nombre, apellido o cédula..." style="width:80%; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:16px;">
+        </div>
+
+        <table id="tabla-catequizandos" class="styled-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Cédula</th>
+                <th>Fe Bautismo</th>
+            </thead>
+            <tbody>
+            {% for c in datos %}
+            <tr>
+                <td>{{ c[0] }}</td>
+                <td>{{ c[1] }}</td>
+                <td>{{ c[2] }}</td>
+                <td>{{ c[3] }}</td>
+                <td class="bautismo-status">{{ "Sí" if c[4] == 1 else "No" }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<style>
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+    }
+
+    .styled-table thead tr {
+        background-color: #8b0000;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3; 
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #8b0000;
+    }
+
+    .bautismo-status {
+        font-weight: bold;
+        text-align: center;
+    }
+    
+</style>
+
+{% endblock %}

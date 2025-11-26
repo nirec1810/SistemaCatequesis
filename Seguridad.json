@@ -1,0 +1,8 @@
+{
+    "server": "LAPTOP-2UK31VL2\\SQLEXPRESS",
+    "database": "SistemaCatequesis",
+    "username": "secretarioCatequesis",
+    "password": "claveSecretario123",
+    "driver": "ODBC Driver 17 for SQL Server",
+    "trust_server_certificate": true 
+}

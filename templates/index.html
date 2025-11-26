@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catequesis Parroquial</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <h1>Parroquia San Pedro Apóstol</h1>
+        <p class="subtitulo">Sistema de Gestión de Catequesis</p>
+    </header>
+
+    <section class="bienvenida">
+        <h2>Bienvenido</h2>
+        <p>
+            La catequesis es un camino de fe, una oportunidad para que niños, jóvenes y adultos 
+            conozcan más profundamente el mensaje de Jesucristo y vivan su Evangelio en comunidad.
+        </p>
+        <p>
+            Este sistema ha sido desarrollado para facilitar el registro, administración y seguimiento 
+            de los catequizandos y sus familias. Siéntase libre de recorrer el sitio y utilizar sus herramientas.
+        </p>
+    </section>
+
+    <section class="info">
+        <h2>¿Qué es la Catequesis?</h2>
+        <p>
+            La catequesis es la enseñanza de la fe cristiana, transmitida por la Iglesia de generación en generación. 
+            A través de encuentros, oración, actividades y celebraciones, se acompaña a los catequizandos en un proceso 
+            de crecimiento espiritual y humano.
+        </p>
+
+        <h3>Objetivos:</h3>
+        <ul>
+            <li>Fomentar la formación cristiana.</li>
+            <li>Acompañar a las familias en su camino espiritual.</li>
+            <li>Preparar para los sacramentos: Bautismo, Comunión, Confirmación.</li>
+            <li>Promover los valores del Evangelio.</li>
+        </ul>
+    </section>
+
+    <section class="horarios">
+        <h2>Horarios de Catequesis</h2>
+        <p>Nuestros encuentros semanales se realizan en los siguientes horarios:</p>
+        <ul>
+            <li><strong>Sábados:</strong> 9h00 - 11h00</li>
+            <li><strong>Domingos:</strong> 10h00 - 12h00</li>
+        </ul>
+    </section>
+
+    <section class="botones">
+        <a class="btn" href="{{ url_for('registrar_catequizando') }}">Registrar Catequizando</a>
+        <a class="btn" href="{{ url_for('listar_catequizandos') }}">Ver Catequizandos</a>
+    </section>
+
+    <footer class="footer">
+        <p>© 2025 Parroquia San Pedro Apóstol - Sistema de Catequesis</p>
+    </footer>
+
+</body>
+</html>

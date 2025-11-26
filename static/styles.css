@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f7f7f7;
+}
+
+.header {
+    background: #8b0000;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.subtitulo {
+    font-size: 18px;
+    margin-top: -10px;
+}
+
+section {
+    padding: 20px;
+}
+
+.bienvenida, .info, .horarios {
+    background: white;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.botones {
+    text-align: center;
+    margin: 20px;
+}
+
+.btn {
+    display: inline-block;
+    background: #8b0000;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #a30000;
+}
+
+.footer {
+    background: #222;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}

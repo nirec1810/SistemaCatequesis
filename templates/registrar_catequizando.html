@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="header">
+    <h2>Registrar Catequizando</h2>
+    <p class="subtitulo">Ingresa la información del nuevo miembro</p>
+</div>
+
+<section>
+    <div class="info">
+        <form method="POST" action="/guardar-catequizando" id="form-catequizando">
+            
+            <fieldset class="form-group">
+                <legend>Datos Personales del Catequizando</legend>
+                
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required maxlength="100">
+
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" required maxlength="100">
+
+                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+
+                <label for="documentoIdentidad">Cédula de Identidad</label>
+                <input type="text" id="documentoIdentidad" name="documentoIdentidad" maxlength="20">
+
+                <label for="feBautismo">Fe de Bautismo</label>
+                <select id="feBautismo" name="feBautismo">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </fieldset>
+
+            
+            <fieldset class="form-group">
+                <legend>Familia del Catequizando</legend>
+
+                <label for="familia_existente">Seleccione familia existente:</label>
+                <select name="familia_existente" id="familia_existente">
+                    <option value="">-- Ninguna --</option>
+                </select>
+
+                <hr style="margin: 20px 0;">
+
+                <h4>O registrar nueva familia:</h4>
+
+                <label>Nombre del familiar</label>
+                <input type="text" name="nuevo_nombre" id="nuevo_nombre" maxlength="100">
+
+                <label>Correo</label>
+                <input type="email" name="nuevo_correo" id="nuevo_correo" maxlength="100">
+
+                <label>Teléfono</label>
+                <input type="text" name="nuevo_telefono" id="nuevo_telefono" maxlength="20">
+
+                <label>Dirección</label>
+                <input type="text" name="nuevo_direccion" id="nuevo_direccion" maxlength="200">
+
+                <p id="help-text" style="color:#555; margin-top:10px;">
+                    * Si selecciona una familia existente, los campos de nueva familia se desactivarán.
+                </p>
+            </fieldset>
+
+            <div class="botones">
+                <button type="submit" class="btn btn-primary">Guardar Catequizando</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<style>
+    .info form label {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #8b0000;
+    }
+    .info form input[type="text"], 
+    .info form input[type="date"],
+    .info form input[type="email"],
+    .info form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .form-group {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+    }
+    .form-group legend {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #8b0000;
+        padding: 0 10px;
+    }
+</style>
+
+
+<script>
+// Cargar familias automáticamente
+fetch("/api/familias")
+    .then(response => response.json())
+    .then(data => {
+        const select = document.getElementById("familia_existente");
+
+        data.forEach(f => {
+            const option = document.createElement("option");
+            option.value = f.idFamilia;
+            option.textContent = `${f.nombreContacto} - ${f.telefono}`;
+            select.appendChild(option);
+        });
+    })
+    .catch(err => console.error("Error cargando familias:", err));
+
+
+document.getElementById("familia_existente").addEventListener("change", function() {
+    const disabled = this.value !== "";
+
+    document.getElementById("nuevo_nombre").disabled = disabled;
+    document.getElementById("nuevo_correo").disabled = disabled;
+    document.getElementById("nuevo_telefono").disabled = disabled;
+    document.getElementById("nuevo_direccion").disabled = disabled;
+
+    if (disabled) {
+        document.getElementById("nuevo_nombre").value = "";
+        document.getElementById("nuevo_correo").value = "";
+        document.getElementById("nuevo_telefono").value = "";
+        document.getElementById("nuevo_direccion").value = "";
+    }
+});
+
+
+// Validacion
+document.getElementById("form-catequizando").addEventListener("submit", function(e) {
+
+    const familiaExistente = document.getElementById("familia_existente").value;
+    const nuevoNombre = document.getElementById("nuevo_nombre").value.trim();
+
+    if (familiaExistente === "" && nuevoNombre === "") {
+        e.preventDefault();
+        alert("Debe seleccionar una familia existente o registrar una nueva.");
+    }
+});
+</script>
+
+{% endblock %}
