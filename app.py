@@ -41,25 +41,22 @@ def guardar_catequizando():
 
     # Caso Crear nueva familia
     else:
-        # Validaciones
         if not nuevo_nombre or nuevo_nombre.strip() == "":
             flash("Debe ingresar el nombre del familiar.", "danger")
             return redirect(url_for("registrar_catequizando"))
 
-        # Normalizar los valores que puedan ser NULL
         nuevo_correo = nuevo_correo or ""
         nuevo_telefono = nuevo_telefono or ""
         nuevo_direccion = nuevo_direccion or ""
 
         try:
             cursor.execute("""
-                INSERT INTO Administrativo.Familia (nombreContacto, correo, telefono, direccion)
+                INSERT INTO Administrativo.Familia
+                (nombreContacto, correo, telefono, direccion)
+                OUTPUT INSERTED.idFamilia
                 VALUES (?, ?, ?, ?)
             """, (nuevo_nombre.strip(), nuevo_correo, nuevo_telefono, nuevo_direccion))
 
-            conn.commit() 
-
-            cursor.execute("SELECT SCOPE_IDENTITY()")
             row = cursor.fetchone()
 
             if not row or row[0] is None:
@@ -67,20 +64,23 @@ def guardar_catequizando():
 
             familia_id = int(row[0])
 
+            conn.commit()
+
         except Exception as e:
             conn.rollback()
             flash(f"Error al registrar familia: {str(e)}", "danger")
             return redirect(url_for("registrar_catequizando"))
 
-    # Notificacion por defecto de creación de usuario
-    notificacion_id = 1  # Depende de tu diseño
+    # Notificación por defecto
+    notificacion_id = 1
 
-    # Insertar catequizando
+    # Insertar catequizando 
     try:
         cursor.execute("""
             INSERT INTO Administrativo.Catequizando
             (nombre, apellidos, fechaNacimiento, documentoIdentidad, feBautismo,
              estado, Familia_idFamilia, Notificacion_idNotificacion)
+            OUTPUT INSERTED.idCatequizando
             VALUES (?, ?, ?, ?, ?, 1, ?, ?)
         """, (nombre, apellidos, fechaNacimiento, documentoIdentidad,
               feBautismo, familia_id, notificacion_id))
