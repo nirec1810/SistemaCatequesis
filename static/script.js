@@ -1,14 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Selects
     async function poblarSelects() {
         try {
-            // Familias
             const resFam = await fetch('/api/familias');
             if (resFam.ok) {
                 const familias = await resFam.json();
-                const famSel = document.querySelector('select[name="familia"]');
+                const famSel = document.querySelector('select[name="familia_existente"]');
                 if (famSel) {
-                    famSel.innerHTML = '<option value="">-- Seleccione familia (opcional) --</option>';
+                    famSel.innerHTML = '<option value="">-- Ninguna --</option>';
                     familias.forEach(f => {
                         const opt = document.createElement('option');
                         opt.value = f.idFamilia;
@@ -18,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            // Notificaciones
             const resNot = await fetch('/api/notificaciones');
             if (resNot.ok) {
                 const nots = await resNot.json();
                 const notSel = document.querySelector('select[name="notificacion"]');
+
                 if (notSel) {
                     notSel.innerHTML = '<option value="">-- Seleccione notificación (opcional) --</option>';
                     nots.forEach(n => {
@@ -33,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
                 }
             }
+
         } catch (err) {
             console.error("Error cargando selects:", err);
         }
@@ -40,11 +39,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     poblarSelects();
 
-    // Validar
     const form = document.querySelector('form[data-form="registrar-catequizando"]');
     if (form) {
         form.addEventListener('submit', function(evt) {
-            // simple validación cliente
             const nombre = form.querySelector('input[name="nombre"]').value.trim();
             const apellidos = form.querySelector('input[name="apellidos"]').value.trim();
             const fecha = form.querySelector('input[name="fechaNacimiento"]').value;
@@ -55,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            // Desactivar botón y mostrar mensaje
             const submitBtn = form.querySelector('button[type="submit"]');
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -64,20 +60,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Listado
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', function() {
             const q = this.value.toLowerCase();
             const rows = document.querySelectorAll('#tabla-catequizandos tbody tr');
+
             rows.forEach(row => {
                 const texto = row.textContent.toLowerCase();
-                row.style.display = texto.indexOf(q) !== -1 ? '' : 'none';
+                row.style.display = texto.includes(q) ? '' : 'none';
             });
         });
     }
 
-    // Confirmaciones 
     document.querySelectorAll('form[data-confirm]').forEach(f => {
         f.addEventListener('submit', function(e){
             const msg = f.getAttribute('data-confirm') || '¿Confirmar acción?';
@@ -86,4 +81,5 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+
 });

@@ -160,6 +160,73 @@ def api_notificaciones():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/editar-catequizando/<int:id>")
+def editar_catequizando(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT idCatequizando, nombre, apellidos, fechaNacimiento,
+               documentoIdentidad, feBautismo, Familia_idFamilia
+        FROM Administrativo.Catequizando
+        WHERE idCatequizando = ?
+    """, (id,))
+    
+    dato = cursor.fetchone()
+
+    if not dato:
+        flash("Catequizando no encontrado.", "danger")
+        return redirect(url_for("listar_catequizandos"))
+
+    return render_template("editar_catequizando.html", c=dato)
+
+
+@app.route("/actualizar-catequizando/<int:id>", methods=["POST"])
+def actualizar_catequizando(id):
+    nombre = request.form["nombre"]
+    apellidos = request.form["apellidos"]
+    fechaNacimiento = request.form["fechaNacimiento"]
+    documentoIdentidad = request.form["documentoIdentidad"]
+    feBautismo = request.form.get("feBautismo", 0)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE Administrativo.Catequizando
+            SET nombre=?, apellidos=?, fechaNacimiento=?, documentoIdentidad=?, feBautismo=?
+            WHERE idCatequizando=?
+        """, (nombre, apellidos, fechaNacimiento, documentoIdentidad, feBautismo, id))
+
+        conn.commit()
+        flash("Catequizando actualizado correctamente ✔", "success")
+        return redirect(url_for("listar_catequizandos"))
+
+    except Exception as e:
+        conn.rollback()
+        flash(f"Error al actualizar: {str(e)}", "danger")
+        return redirect(url_for("editar_catequizando", id=id))
+
+
+@app.route("/eliminar-catequizando/<int:id>", methods=["POST"])
+def eliminar_catequizando(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("DELETE FROM Administrativo.Catequizando WHERE idCatequizando = ?", (id,))
+        conn.commit()
+
+        flash("Catequizando eliminado correctamente ✔", "success")
+        return redirect(url_for("listar_catequizandos"))
+
+    except Exception as e:
+        conn.rollback()
+        flash(f"No se pudo eliminar: {str(e)}", "danger")
+        return redirect(url_for("listar_catequizandos"))
+
+
 # Iniciar servidor
 if __name__ == "__main__":
     app.run(debug=True)

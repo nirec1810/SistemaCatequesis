@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="header">
+    <h2>Editar Catequizando</h2>
+    <p class="subtitulo">Modifica la información del catequizando</p>
+</div>
+
+<section>
+    <div class="info">
+
+        <!-- FORMULARIO DE ACTUALIZACIÓN -->
+        <form method="POST" action="/actualizar-catequizando/{{ c[0] }}" class="form-editar">
+
+            <fieldset class="form-group">
+                <legend>Datos Personales</legend>
+
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="{{ c[1] }}" required>
+
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" value="{{ c[2] }}" required>
+
+                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" value="{{ c[3] }}" required>
+
+                <label for="documentoIdentidad">Cédula de Identidad</label>
+                <input type="text" id="documentoIdentidad" name="documentoIdentidad" value="{{ c[4] }}">
+
+                <label for="feBautismo">Fe de Bautismo</label>
+                <select id="feBautismo" name="feBautismo">
+                    <option value="1" {% if c[5] == 1 %}selected{% endif %}>Sí</option>
+                    <option value="0" {% if c[5] == 0 %}selected{% endif %}>No</option>
+                </select>
+            </fieldset>
+
+            <div class="botones">
+                <button type="submit" class="btn guardar">Guardar Cambios</button>
+            </div>
+        </form>
+
+        <!-- BOTÓN DE ELIMINAR -->
+        <form method="POST" action="/eliminar-catequizando/{{ c[0] }}" onsubmit="return confirm('¿Seguro que deseas eliminar este catequizando? Esta acción no se puede deshacer.');">
+            <button type="submit" class="btn eliminar">Eliminar Catequizando</button>
+        </form>
+
+    </div>
+</section>
+
+<style>
+
+    .form-editar label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #8b0000;
+    }
+
+    .form-editar input, 
+    .form-editar select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    .form-group {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+    }
+
+    .form-group legend {
+        font-size: 1.2em;
+        color: #8b0000;
+        font-weight: bold;
+    }
+
+    .botones {
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .guardar {
+        background-color: #8b0000;
+    }
+
+    .eliminar {
+        background-color: #d9534f;
+        margin-top: 10px;
+    }
+
+    .eliminar:hover {
+        background-color: #c9302c;
+    }
+
+    .guardar:hover {
+        background-color: #600000;
+    }
+
+</style>
+
+{% endblock %}

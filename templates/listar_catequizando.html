@@ -8,31 +8,49 @@
 
 <section>
     <div class="info">
+
+        <!-- Buscador -->
         <div style="text-align:center; margin-bottom:20px;">
-            <input id="searchInput" placeholder="Buscar por nombre, apellido o cédula..." style="width:80%; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:16px;">
+            <input id="searchInput" placeholder="Buscar por nombre, apellido o cédula..." 
+                   style="width:80%; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:16px;">
         </div>
 
+        <!-- Tabla -->
         <table id="tabla-catequizandos" class="styled-table">
             <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Cédula</th>
-                <th>Fe Bautismo</th>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cédula</th>
+                    <th>Fe Bautismo</th>
+                    <th>Acciones</th>
+                </tr>
             </thead>
+
             <tbody>
             {% for c in datos %}
-            <tr>
-                <td>{{ c[0] }}</td>
-                <td>{{ c[1] }}</td>
-                <td>{{ c[2] }}</td>
-                <td>{{ c[3] }}</td>
-                <td class="bautismo-status">{{ "Sí" if c[4] == 1 else "No" }}</td>
-            </tr>
+                <tr>
+                    <td>{{ c[0] }}</td>
+                    <td>{{ c[1] }}</td>
+                    <td>{{ c[2] }}</td>
+                    <td>{{ c[3] }}</td>
+                    <td class="bautismo-status">{{ "Sí" if c[4] == 1 else "No" }}</td>
+
+                    <td>
+                        <a href="/editar-catequizando/{{ c[0] }}" class="btn-small editar">Editar</a>
+
+                        <form action="/eliminar-catequizando/{{ c[0] }}" method="POST" 
+                              style="display:inline-block;" 
+                              data-confirm="¿Seguro que deseas eliminar este catequizando?">
+                            <button type="submit" class="btn-small eliminar">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>
+
     </div>
 </section>
 
@@ -62,7 +80,7 @@
     }
 
     .styled-table tbody tr:nth-of-type(even) {
-        background-color: #f3f3f3; 
+        background-color: #f3f3f3;
     }
 
     .styled-table tbody tr:last-of-type {
@@ -73,7 +91,30 @@
         font-weight: bold;
         text-align: center;
     }
-    
+
+    .btn-small {
+        padding: 6px 12px;
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85em;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .btn-small.editar {
+        background-color: #0066cc;
+    }
+
+    .btn-small.eliminar {
+        background-color: #cc0000;
+    }
+
+    .btn-small:hover {
+        opacity: 0.85;
+    }
 </style>
 
 {% endblock %}
